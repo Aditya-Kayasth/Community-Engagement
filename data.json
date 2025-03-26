@@ -1,0 +1,30 @@
+[
+    {
+        "category": "E-Waste Management",
+        "description": "to the concerned ngo",
+        "image": "static/uploads\\pexels-giancarlo-ruedas-575430257-31258595.jpg",
+        "latitude": "",
+        "longitude": ""
+    },
+    {
+        "category": "Animal Testing in Labs",
+        "description": "Rates are getting tortured",
+        "image": "static/uploads\\DSCN0040.jpg",
+        "latitude": 43.466012,
+        "longitude": 11.879112
+    },
+    {
+        "category": "Animal Testing in Labs",
+        "description": "Rates are getting tortured",
+        "image": "static/uploads\\DSCN0040.jpg",
+        "latitude": 43.466012,
+        "longitude": 11.879112
+    },
+    {
+        "category": "Animal Testing in Labs",
+        "description": "Rates are getting tortured",
+        "image": "static/uploads\\Cheetah.jpg",
+        "latitude": "21.1778618",
+        "longitude": "79.0623988"
+    }
+]

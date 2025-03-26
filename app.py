@@ -1,27 +1,50 @@
 import os
 import json
 import exifread
-from flask import Flask, request, redirect, url_for, jsonify, render_template
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+
 UPLOAD_FOLDER = 'static/uploads'
 JSON_FILE = 'data.json'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+categories = [
+    "Environmental Issues",
+    "Deforestation",
+    "Illegal Wildlife Trade",
+    "Air Pollution",
+    "Water Pollution",
+    "Plastic Waste Management",
+    "Climate Change",
+    "Industrial Waste Dumping",
+    "Ocean Conservation",
+    "E-Waste Management",
+    "Land Degradation",
+    "Animal Welfare",
+    "Animal Cruelty & Abuse",
+    "Wildlife Conservation",
+    "Stray Animal Rescue",
+    "Illegal Poaching",
+    "Animal Testing in Labs",
+    "Marine Life Protection",
+    "Zoo and Captivity Exploitation"
+]
 
 def allowed_file(filename):
-    """Check if the file has a valid extension"""
-    if '.' not in filename:
-        return False  # No file extension found
-
-    extension = filename.rsplit('.', 1)[1].lower()  # Extract file extension
-    return extension in ALLOWED_EXTENSIONS  # Check if it's allowed
-
+    """Check if the file extension is allowed."""
+    if "." not in filename:
+        return False
+    ext = filename.rsplit('.', 1)[1].lower()
+    return ext in ALLOWED_EXTENSIONS
 
 def extract_gps(image_path):
+    """Extract GPS coordinates from image metadata."""
     with open(image_path, 'rb') as img_file:
         tags = exifread.process_file(img_file)
         if 'GPS GPSLatitude' in tags and 'GPS GPSLongitude' in tags:
@@ -35,51 +58,51 @@ def extract_gps(image_path):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Extract form data
+        category = request.form.get('category')
         description = request.form.get('description')
-        lat, lon = request.form.get('latitude'), request.form.get('longitude')
+        lat = request.form.get('latitude')
+        lon = request.form.get('longitude')
         file = request.files.get('image')
 
-        image_path = None  # Default to None in case no file is uploaded
-
-        # Handle file upload
+        image_path = None
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(image_path)
-
-            # Extract GPS coordinates from image
             gps = extract_gps(image_path)
             if gps:
-                lat, lon = gps  # Use extracted GPS data if available
+                lat, lon = gps
 
-        # Create the report dictionary
-        report = {"description": description, "image": image_path, "latitude": lat, "longitude": lon}
+        report = {
+            "category": category,
+            "description": description,
+            "image": image_path,
+            "latitude": lat,
+            "longitude": lon
+        }
 
-        # Load existing data and append new report
         try:
             with open(JSON_FILE, 'r') as f:
                 data = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
-            data = []  # Initialize empty list if the file doesn't exist or is corrupt
+            data = []
 
         data.append(report)
 
-        # Save updated data
         with open(JSON_FILE, 'w') as f:
             json.dump(data, f, indent=4)
 
         return redirect(url_for('success'))
 
-    return render_template('index.html')
-
+    return render_template('index.html', categories=categories)
 
 @app.route('/success')
 def success():
-    return "Report submitted successfully!"
+    return "<h2>Report submitted successfully!</h2><a href='/'>Submit another report</a>"
 
 @app.route('/reports')
 def reports():
+    """View stored reports"""
     try:
         with open(JSON_FILE, 'r') as f:
             data = json.load(f)
@@ -89,3 +112,7 @@ def reports():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
