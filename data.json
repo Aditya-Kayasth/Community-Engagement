@@ -1,0 +1,38 @@
+[
+    {
+        "description": "test 3",
+        "image": "static/uploads\\DSCN0025.jpg",
+        "latitude": 43.468365,
+        "longitude": 11.881635
+    },
+    {
+        "description": "test 4",
+        "image": "static/uploads\\DSCN0010.jpg",
+        "latitude": 43.467448,
+        "longitude": 11.885127
+    },
+    {
+        "description": "test 5",
+        "image": "static/uploads\\DSCN0040.jpg",
+        "latitude": 43.466012,
+        "longitude": 11.879112
+    },
+    {
+        "description": "test 6",
+        "image": "static/uploads\\DSCN0025.jpg",
+        "latitude": 43.468365,
+        "longitude": 11.881635
+    },
+    {
+        "description": "test 2",
+        "image": "static/uploads\\DSCN0010.jpg",
+        "latitude": 43.467448,
+        "longitude": 11.885127
+    },
+    {
+        "description": "test0",
+        "image": "static/uploads\\diego-ph-5LOhydOtTKU-unsplash.jpg",
+        "latitude": "21.1778588",
+        "longitude": "79.0623975"
+    }
+]
